@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>{if isset($SEO['title']) && !empty($SEO['title'])}{$SEO['title']}你好合肥{else}{$SEO['site_title']}{/if}</title>
+<meta name="keywords" content="{$SEO['keyword']}">
+<meta name="description" content="{$SEO['description']}">
+<link href="{CSS_PATH}reset.css" rel="stylesheet" type="text/css" />
+<link href="{CSS_PATH}default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{JS_PATH}jquery.min.js"></script>
+<script type="text/javascript" src="{JS_PATH}jquery.sgallery.js"></script>
+<script type="text/javascript" src="{JS_PATH}search_common.js"></script>
+</head>
+<body>
+<div class="header">
+    <div class="header-box">
+        <div class="logo"><a href="{siteurl($siteid)}/" target="_blank"><img src="{IMG_PATH}logo.png" /></a></div>
+        
+        <div class="map">
+            {pc:content action="category" catid="0" num="50" siteid="$siteid" order="listorder ASC"}
+                <a href="{siteurl($siteid)}" target="_blank"><span>首页</span></a>
+                {loop $data $r}
+                {if $r[catid]>39 && $r[catid]<43}
+                    <span>|</span><a href="{$r[url]}" target="_blank" title="{$r[title]}"><span>{$r[catname]}</span></a>
+                {/if}
+                {/loop}
+            {/pc}
+            {php echo runhook('glogal_menu')}
+        </div>
+
+        <div class="login">
+        <span class="websubmit"><a href="http://hyu2915660001.my3w.com/index.php?m=member&c=content&a=publish">网站提交</a></span>
+        <span class="websubmit">{date('Y/m/d',time($updatetime))}  {date('D',time($updatetime))}</span>
+        <span class="rt"><script type="text/javascript">document.write('<iframe src="{APP_PATH}index.php?m=member&c=index&a=mini&forward='+encodeURIComponent(location.href)+'&siteid={get_siteid()}" allowTransparency="true"  width="160" height="40" frameborder="0" scrolling="no"></iframe>')</script></span>
+        </div>
+
+        <div class="search">
+            <div class="bd">
+                <form action="{APP_PATH}index.php" method="get" target="_blank">
+                    <input type="hidden" name="m" value="search"/>
+                    <input type="hidden" name="c" value="index"/>
+                    <input type="hidden" name="a" value="init"/>
+                    <input type="hidden" name="typeid" value="{$typeid}" id="typeid"/>
+                    <input type="hidden" name="siteid" value="{$siteid}" id="siteid"/>
+                    <input type="text" class="text" name="q" id="q"/><input type="submit" value="" class="button" />
+                </form>
+            </div>
+        </div>
+
+        <div class="bk3"></div>
+    </div>
+</div> 

@@ -1,0 +1,116 @@
+{template "content","header"}
+<div class="main sitemain">
+
+  <div class="top_pic">
+      {pc:content  action="position" posid="14"  order="listorder DESC" thumb="1" num="1"}
+                  {loop $data $r}
+                      <a href="{$r['url']}" title="{str_cut($r['title'],90)}"><img src="{$r['thumb']}" alt="{str_cut($r['title'],90)}" /></a>
+                  {/loop}
+          {/pc}
+  </div>
+  
+	<!--left_bar-->
+	<div class="col-left">
+    <div class="crumbs"><a href="{siteurl($siteid)}">首页</a><span> &gt; </span>{catpos($catid)}{$title}</div>
+      <div class="sitebox">
+      <table>
+        <caption>
+        <h5>{$title}</h5>
+        </caption>
+        <tbody><tr>
+          <th>网站名称：</th>
+          <td><h5>{$sitename}</h5>{if $thumb}<img src="{$thumb}" width="150"/>{/if}</td>
+        </tr>
+        <tr>
+          <th>网站简介：</th>
+          <td>{$description}</td>
+        </tr>
+        <tr>
+          <th>网站地址：</th>
+          <td>{$sourceurl}<span class="jump">访问网站</span></td>
+        </tr>
+        <tr>
+          <th>更新时间：</th>
+          <td> {$updatetime}</td>
+        </tr>
+        <tr>
+          <th>联系方式：</th>
+          <td>{$contact}</td>
+        </tr>
+        <tr>
+          <th>网站评级：</th>
+          <td class="c_orange"> {$ranking}</td>
+        </tr>
+        <tr>
+          <th>浏览次数：</th>
+          <td colspan="2"><span id="hits"></span>（今日：<span id="todaydowns"></span>，本周：<span id="weekdowns"></span>，本月：<span id="monthdowns"></span>）</td>
+        </tr>
+        <tr>
+          <th>相关标签：</th>
+          <td>{loop $keywords $keyword}<a href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}" class="blue">{$keyword}</a>  {/loop}</td>
+        </tr>
+      </tbody></table>
+      </div>
+      <h5 class="tit">网站简介</h5>
+      <div class="content"><img src="{$screenshot}" alt="{$title}" /><br /><p>{$title}</p>{$content}</div>
+      <div class="bk10"></div>
+      <div class="Article-Tool">    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_huaban" data-cmd="huaban" title="分享到花瓣"></a>
+    <a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a></div>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","qzone","bdysc","bdxc","tqf","tieba","douban","bdhome","sqq","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","people","xinhua","isohu","wealink","ty","h163","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"32"},"share":{},"image":{"viewList":["weixin","tsina","huaban","duitang","tieba"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","tsina","huaban","duitang","tieba"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+      </div>
+      <!--评论-->
+      <div class="bk10"></div>
+      {if $allow_comment && module_exists('comment')}
+   <iframe src="{APP_PATH}index.php?m=comment&c=index&a=init&commentid={id_encode("content_$catid",$id,$siteid)}&iframe=1" width="100%" height="100%" id="comment_iframe" frameborder="0" scrolling="no"></iframe>
+	{/if}
+    </div>
+    <!--right_bar-->
+    <div class="col-auto">
+    	<!--广告228x162-->
+        <div class="box">
+            <h5 class="title-2">网站排行</h5>
+            <ul class="content">
+			{pc:content action="hits" catid="$catid" num="10" order="views DESC" cache="3600"}
+				{loop $data $r}
+					<li><a href="{$r[url]}" target="_blank">{$r[title]}</a></li>
+				{/loop}
+			{/pc}
+            </ul>
+        </div>
+        <div class="bk10"></div>
+        <div class="box">
+            <h5 class="title-2">相关网站</h5>
+            <div class="content">
+			    <ul class="content">
+					{pc:content action="relation" relation="$relation" catid="$catid" num="5" keywords="$rs[keywords]"}
+					{loop $data $r}
+						<li><a href="{$r[url]}" target="_blank">{$r['title']}</a></li>
+					{/loop}
+					{/pc}
+                </ul>
+            </div>
+        </div>
+        <div class="bk10"></div>
+        <div class="box">
+            <h5 class="title-2">推荐网站</h5>
+            <ul class="content digg">
+            	{pc:content  action="position" posid="1" order="listorder DESC" num="10"}
+        	 	{loop $data $r}        
+                <li><a href="{$r[url]}" title="{$r[title]}">{$r[sitename]}</a></li>
+               	{/loop}  
+             	{/pc} 
+            </ul>
+        </div>
+        <div class="bk10"></div>
+    </div>
+</div>
+
+<div class="bk10"></div>
+<script language="JavaScript" src="{APP_PATH}api.php?op=count&id={$id}&modelid={$modelid}"></script>
+<script type="text/javascript">$(function(){$('span.jump').click(function(){window.open('{$sourceurl}','target');})})</script>
+{template "content","footer"}

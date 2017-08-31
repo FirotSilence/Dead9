@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>{if isset($SEO['title']) && !empty($SEO['title'])}{$SEO['title']}{$SEO['name']}{else}{$SEO['site_title']}{/if}</title>
+<meta name="keywords" content="{$SEO['keyword']}">
+<meta name="description" content="{$SEO['description']}">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=0.5,maximum-scale=2,user-scalable=no,minimal-ui" />
+<link href="{CSS_PATH}default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{JS_PATH}jquery.min.js"></script>
+<script type="text/javascript" src="{JS_PATH}jquery.sgallery.js"></script>
+<script type="text/javascript" src="{JS_PATH}search_common.js"></script>
+</head>
+<body>
+<div class="header">
+		<div class="logo"><a href="{siteurl($siteid)}/" target="_blank"><img src="{IMG_PATH}logo.png" /></a></div>    
+	    <p class="map">
+			{pc:content action="category" catid="0" siteid="$siteid" num="50" order="listorder ASC" return="data"}
+				<a href="{siteurl($siteid)}/" target="_blank">首页</a>
+				{loop $data $r}
+					<a href="{$r[url]}" target="_blank" title="{$r[title]}">{$r[catname]}</a>
+				{/loop}
+		    {/pc}
+			{php echo runhook('glogal_menu')}
+		</p>
+</div>

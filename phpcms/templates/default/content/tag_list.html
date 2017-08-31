@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>{$tag}:关于{$tag}的文章 - 关键字标签列表 - DeadNine</title>
+<meta name="keywords" content="{$tag}">
+<meta name="description" content="{$tag}:DeadNine关于关键词“{$tag}”的文章列表。">
+<link href="{CSS_PATH}reset.css" rel="stylesheet" type="text/css" />
+<link href="{CSS_PATH}default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{JS_PATH}jquery.min.js"></script>
+<script type="text/javascript" src="{JS_PATH}jquery.sgallery.js"></script>
+<script type="text/javascript" src="{JS_PATH}search_common.js"></script>
+</head>
+<body>
+<div class="header"><div class="wrap">
+        <div class="logo"><a href="{siteurl($siteid)}/" target="_blank"><img src="{IMG_PATH}logo.png" /></a></div>
+        <div class="map">
+            {pc:content action="category" catid="0" siteid="$siteid" num="50" order="listorder ASC" return="data"}
+                <a href="{siteurl($siteid)}/" target="_blank">首页</a>
+                {loop $data $r}
+                    <a href="{$r[url]}" target="_blank" title="{$r[title]}">{$r[catname]}</a>
+                {/loop}
+            {/pc}
+            {php echo runhook('glogal_menu')}
+        </div>
+</div>
+
+<!--main-->
+<div class="main">
+    	<div class="crumbs"><a href="{siteurl($siteid)}">首页</a><span> > </span>{catpos($catid)} 标签：<font color="red">{$tag}</font> 总共有 {$total} 条记录</div>
+        <div class="catbox">
+        <ul>
+            {loop $datas $r}
+            	<li>
+                    <a href="{$r[url]}" target="_blank"{title_style($r[style])}>
+                    <span>{$r[title]}</span>
+                    <img src="{thumb($r[thumb],720,300)}"/>
+                    </a>
+                    <i>
+                    <p>{str_cut($r[description],200)}…</p>
+                    {php $keywords = explode(' ',str_replace(","," ",trim($r[keywords]," ")));}
+                    {loop $keywords $keyword}{if !empty($keyword)}<a href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}">{$keyword}</a>{/if}{/loop}
+                    <p>更新时间 : {date('Y-m-d H:i:s',$r[inputtime])}</p>
+                    </i>
+                </li>
+            {/loop}
+        </ul>
+        <div id="pages" class="text-c">{$pages}</div>
+        </div>
+</div>
+{template "content","footer"}

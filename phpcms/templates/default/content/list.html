@@ -1,0 +1,73 @@
+{template "content","header"}
+<!--main-->
+<div class="main">
+    	<div class="crumbs"><a href="{siteurl($siteid)}">首页</a><span> > </span>{catpos($catid)} 列表</div>
+    	{pc:content action="lists" catid="$catid" num="25" order="id DESC" page="$page"}
+		
+		<div class="catbox">
+            <ul>
+             {loop $data $r}
+            	<li>
+                    <a href="{$r[url]}" title="{$r[title]}">
+                    <span>{str_cut($r[title],65)}</span>
+                    <img src="{thumb($r[thumb],720,300)}" title="{$r[title]}"/>
+                    <p>{str_cut($r[description],200)}…</p>
+                    <i>
+                        {php $keywords = explode(' ',str_replace(","," ",trim($r[keywords]," ")));}
+                        {loop $keywords $keyword}<a href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}">{$keyword}</a>{/loop}
+                        <p>更新时间 : {date('Y-m-d H:i:s',$r[inputtime])}</p>
+                    </i>
+                    </a>
+                </li>
+                {/loop}
+            </ul>
+          {/pc}
+		
+        <div id="pages" class="text-c">{$pages}</div>
+{/pc}
+  </div>
+        <div class="catbox">
+            <em>频道总排行</em>
+             {pc:content action="hits" catid="$catid" num="10" order="views DESC" cache="3600"}
+             <ul>
+				{loop $data $r}
+                <li>
+					<a href="{$r[url]}" title="{$r[title]}">
+                    <span>{$r[title]}</span>
+                    <img src="{thumb($r[thumb],720,300)}" title="{$r[title]}"/> 
+                    <i>
+                        <p>{str_cut($r[description],200)}…</p>
+                        {php $keywords = explode(' ',str_replace(","," ",trim($r[keywords]," ")));}
+                        {loop $keywords $keyword}<a href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}">{$keyword}</a>{/loop}
+                        <p>更新时间 : {date('Y-m-d H:i:s',$r[inputtime])}</p>
+                    </i>
+                    </a>
+                </li>
+				{/loop}
+            </ul>
+            {/pc}
+        </div>
+        <div class="bk10"></div>
+        <div class="catbox">
+            <em>频道本月排行</em>
+             {pc:content action="hits" catid="$catid" num="8" order="monthviews DESC" cache="3600"}
+            <ul>
+				{loop $data $r}
+				<li>
+                    <a href="{$r[url]}" title="{$r[title]}">
+                        <span>{$r[title]} <i>【月访问:{number_format($r[monthviews])}】</i></span>
+                        <img src="{thumb($r[thumb],720,300)}" title="{$r[title]}"/>
+                        <i>
+                            <p>{str_cut($r[description],200)}…</p>
+                            {php $keywords = explode(' ',str_replace(","," ",trim($r[keywords]," ")));}
+                            {loop $keywords $keyword}<a href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}">{$keyword}</a>{/loop}
+                            <p>更新时间 : {date('Y-m-d H:i:s',$r[inputtime])}</p>
+                        </i>
+                    </a>
+                </li>
+				{/loop}                
+            </ul>
+            {/pc}
+        </div>
+</div>
+{template "content","footer"}

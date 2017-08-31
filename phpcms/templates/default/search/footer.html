@@ -1,0 +1,38 @@
+<div class="sr_footer">	  
+<p class="info">
+{pc:content action="category" catid="1" num="15" siteid="$siteid" order="listorder ASC"}
+{loop $data $r}
+<a href="{$r[url]}" target="_blank">{$r[catname]}</a> |  
+{/loop}
+{/pc}
+<a href="{APP_PATH}index.php?m=link&siteid={$siteid}" target="_blank">友情链接</a> |<a href="{APP_PATH}index.php?m=link&siteid={$siteid}" hidefocus="true" class="rt">更多>></a>
+<a href="/sitemaps.xml" target="_blank">Sitemaps</a> |
+<a href="/baidunews.xml" target="_blank">互联网新闻开放协议</a>
+<br />
+Copyright © 2017 Heyhefei.com All rights reserved.<br />Powered by <strong><a href="http://www.Heyhefei.com" target="_blank">Heyhefei.com</a></strong> <em>V1.0.0</em> &copy; 2017 皖ICP备15015532号-4{tjcode()}{php echo runhook('glogal_footer')}
+<br />
+以上信息由企业自行提供,信息内容的真实性,准确性和合法性由相关企业负责,你好合肥对此不承担任何保证责任
+</p>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(".picbig").each(function(i){
+		var cur = $(this).find('.img-wrap').eq(0);
+		var w = cur.width();
+		var h = cur.height();
+	   $(this).find('.img-wrap img').LoadImage(true, w, h,'{IMG_PATH}msg_img/loading.gif');
+	});
+})
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?6ce484d42c6d5230e5e89d4e57e69024";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script src="https://s22.cnzz.com/z_stat.php?id=1262101044&web_id=1262101044" language="JavaScript"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{template "content","header"}
+<!--main-->
+<div class="main">
+	<div class="col-left">
+    	<div class="crumbs"><a href="{siteurl($siteid)}">首页</a><span> > </span>{catpos($catid)} 列表</div>
+    	{pc:content action="lists" catid="$catid" num="25" order="id DESC" page="$page" moreinfo="1"}
+		
+		<div class="sagibox">
+            <ul>
+             {loop $data $r}
+            	<li>
+                    <div class="sagiimg">
+                        <a href="{$r[url]}" title="{$r[title]}"><img src="{thumb($r[thumb],200,0)}" title="{$r[title]}"/></a>
+                    </div>
+                    <div class="sagiwrap">
+					<a href="{$r[url]}" title="{$r[title]}">{$r[sitename]}</a>
+					<p>{str_cut($r[description],200)}…</p>
+					</div>
+					{php $keywords = explode(' ',str_replace(","," ",trim($r[keywords]," ")));}
+					<span>标签：{loop $keywords $keyword}
+					<a style="color:#333; border:1px solid #333; padding:2px;" href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}"> 
+					{$keyword}</a>{/loop}</span>
+					<span>更新时间 : {date('Y-m-d H:i:s',$r[inputtime])}</span>
+                </li>
+                {/loop}
+            </ul>
+          {/pc}	
+		</div>
+		
+        <div id="pages" class="text-c">{$pages}</div>
+{/pc}
+  </div>
+    <div class="col-auto">
+        <div class="box">
+            <h5 class="title-2">频道总排行</h5>
+             {pc:content action="hits" catid="$catid" num="10" order="views DESC" cache="3600"}
+            <ul class="content digg">
+				{loop $data $r}
+					<li><a href="{$r[url]}" target="_blank">{$r[title]}</a></li>
+				{/loop}
+            </ul>
+            {/pc}
+        </div>
+        <div class="bk10"></div>
+        <div class="box">
+            <h5 class="title-2">频道本月排行</h5>
+             {pc:content action="hits" catid="$catid" num="8" order="monthviews DESC" cache="3600"}
+            <ul class="content rank">
+				{loop $data $r}
+				<li><span>{number_format($r[monthviews])}</span><a href="{$r[url]}"{title_style($r[style])} class="title" title="{$r[title]}">{str_cut($r[title],56,'...')}</a></li>
+				{/loop}
+            </ul>
+            {/pc}
+        </div>
+    </div>
+</div>
+{template "content","footer"}

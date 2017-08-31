@@ -1,0 +1,187 @@
+{template "content","header"}
+<div class="main">
+
+	<div class="col-left">
+    	<div class="crumbs"><a href="{siteurl($siteid)}">首页</a><span> &gt; </span>{catpos($catid)} 正文</div>
+
+        <div id="Article">
+        	<h1>
+	        	{$title}<br />
+				<span>{$inputtime}&nbsp;&nbsp;&nbsp;来源：{$copyfrom}&nbsp;&nbsp;&nbsp;评论：
+				<a href="#comment_iframe" id="comment">0</a> 点击：</span><span id="hits"></span>
+			</h1>
+			<div class="content">
+			{if $allow_visitor==1}
+				{php $i=strrpos($pages,"href=");}
+				{php $str = substr($pages,$i+5,-13);}
+				{if !empty($str)}
+				{php $content = str_replace("<img","<p style=\"text-align:center;font-size:10px;\">（ 点击图片进入下一页 ）</p><a href=".$str."<img",$content);}
+				{php echo str_replace("/>","/></a>",$content);} 
+			{else}{$content}
+			{/if}
+				<!--内容关联投票-->
+				{if $voteid}<script language="javascript" src="{APP_PATH}index.php?m=vote&c=index&a=show&action=js&subjectid={$voteid}&type=2"></script>{/if}
+                
+			{else}
+				<CENTER><a href="{APP_PATH}index.php?m=content&c=readpoint&allow_visitor={$allow_visitor}"><font color="red">阅读此信息需要您支付 <B><I>{$readpoint} {if $paytype}元{else}点{/if}</I></B>，点击这里支付</font></a></CENTER>
+			{/if}
+			</div>
+
+	{if $titles}
+		<fieldset>
+			<legend>本文导航</legend>
+			<ul class="list">
+			{loop $titles $r}
+				<li>{$n}、<a href="{$r[url]}">{$r[title]}</a></li>
+			{/loop}
+			</ul>
+		</fieldset>
+	{/if}
+
+	<div id="pages">{$pages}</div>
+
+    <div class="Article-Tool">
+	<div class="bdsharebuttonbox">
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_huaban" data-cmd="huaban" title="分享到花瓣"></a>
+	<a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
+	<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+	<a href="#" class="bds_more" data-cmd="more"></a></div>
+	<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","qzone","bdysc","bdxc","tqf","tieba","douban","bdhome","sqq","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","people","xinhua","isohu","wealink","ty","h163","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"32"},"share":{},"image":{"viewList":["weixin","tsina","huaban","duitang","tieba"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","tsina","huaban","duitang","tieba"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+ 	</div>
+    <p style="margin-bottom:10px">
+    <strong>相关热词搜索：</strong>{loop $keywords $keyword}<a href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}" class="blue">{$keyword}</a> 	{/loop}
+    </p>
+    <p class="f14">
+        <strong>上一篇：</strong><a href="{$previous_page[url]}">{$previous_page[title]}</a><br />
+        <strong>下一篇：</strong><a href="{$next_page[url]}">{$next_page[title]}</a>
+    </p>
+
+	{pc:content action="relation" relation="$relation" id="$id" catid="$catid" num="5" keywords="$rs[keywords]"}
+	  {if $data}
+	    <div class="related">
+	        <h5>延伸阅读：</h5>
+	        <ul class="list ">
+	            {loop $data $r}
+	                <li>·<a href="{$r[url]}" target="_blank">{$r[title]}</a><span>({date('Y-m-d',$r[inputtime])})</span></li>
+	            {/loop}
+	        </ul>
+	    </div>
+	  {/if}
+	{/pc}
+  </div>
+      <div class="bk10"></div>
+  </div>
+
+    <div class="col-auto">
+	
+		<div class="news-hot">
+			<div class="content">
+			{pc:content  action="position" posid="2" order="listorder DESC" num="4"}
+			{loop $data $r}
+			<h5><a href="{$r[url]}" title="{$r[title]}">{str_cut($r[title],80,'')}</a></h5>
+			<p>{if $n==1}<img src="{thumb($r[thumb],720,300)}"/>{/if}{str_cut($r[description],140)}</p>
+			<div class="bk20 hr"><hr /></div>
+			{/loop}  
+			{/pc}   
+			</div>
+		</div>
+
+        <div class="catbox">
+            <em>频道总排行</em>
+             {pc:content action="hits" catid="$catid" num="10" order="views DESC" cache="3600"}
+             <ul>
+				{loop $data $r}
+                <li>
+					<a href="{$r[url]}" title="{$r[title]}">
+					<span>{$r[title]}</span>
+                    <img src="{thumb($r[thumb],720,300)}" title="{$r[title]}"/>
+                    <i>
+                    <p>{str_cut($r[description],200)}…</p>
+               			{php $keywords = explode(' ',str_replace(","," ",trim($r[keywords]," ")));}
+                        {loop $keywords $keyword}<a href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}">{$keyword}</a>{/loop}
+                        <p>更新时间 : {date('Y-m-d H:i:s',$r[inputtime])}</p>
+                    </i>
+                    </a>
+                </li>
+				{/loop}
+            </ul>
+            {/pc}
+        </div>
+        <div class="bk10"></div>
+        <div class="catbox">
+            <em>频道本月排行</em>
+             {pc:content action="hits" catid="$catid" num="8" order="monthviews DESC" cache="3600"}
+            <ul>
+				{loop $data $r}
+				<li>
+                    <a href="{$r[url]}" title="{$r[title]}">
+                   		<span>{$r[title]} <i>【月访问:{number_format($r[monthviews])}】</i></span>
+                        <img src="{thumb($r[thumb],720,300)}" title="{$r[title]}"/>
+                        <i>
+	                        <p>{str_cut($r[description],200)}…</p>
+	                        {php $keywords = explode(' ',str_replace(","," ",trim($r[keywords]," ")));}
+                            {loop $keywords $keyword}<a href="{APP_PATH}index.php?m=content&c=tag&a=lists&tag={urlencode($keyword)}">{$keyword}</a>{/loop}
+                            <p>更新时间 : {date('Y-m-d H:i:s',$r[inputtime])}</p>
+                        </i>
+                    </a>
+                </li>
+				{/loop}
+            </ul>
+            {/pc}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+<!--
+	function show_ajax(obj) {
+		var keywords = $(obj).text();
+		var offset = $(obj).offset();
+		var jsonitem = '';
+		$.getJSON("{APP_PATH}index.php?m=content&c=index&a=json_list&type=keyword&modelid={$modelid}&id={$id}&keywords="+encodeURIComponent(keywords),
+				function(data){
+				var j = 1;
+				var string = "<div class='point key-float'><div style='position:relative'><div class='arro'></div>";
+				string += "<a href='JavaScript:;' onclick='$(this).parent().parent().remove();' hidefocus='true' class='close'><span>关闭</span></a><div class='contents f12'>";
+				if(data!=0) {
+				  $.each(data, function(i,item){
+					j = i+1;
+					jsonitem += "<a href='"+item.url+"' target='_blank'>"+j+"、"+item.title+"</a><BR>";
+					
+				  });
+					string += jsonitem;
+				} else {
+					string += '没有找到相关的信息！';
+				}
+					string += "</div><span class='o1'></span><span class='o2'></span><span class='o3'></span><span class='o4'></span></div></div>";		
+					$(obj).after(string);
+					$('.key-float').mouseover(
+						function (){
+							$(this).siblings().css({"z-index":0})
+							$(this).css({"z-index":1001});
+						}
+					)
+					$(obj).next().css({ "left": +offset.left-100, "top": +offset.top+$(obj).height()+12});
+				});
+	}
+
+	function add_favorite(title) {
+		$.getJSON('{APP_PATH}api.php?op=add_favorite&title='+encodeURIComponent(title)+'&url='+encodeURIComponent(location.href)+'&'+Math.random()+'&callback=?', function(data){
+			if(data.status==1)	{
+				$("#favorite").html('收藏成功');
+			} else {
+				alert('请登录');
+			}
+		});
+	}
+
+$(function(){
+  $('#Article .content img').LoadImage(true, 660,6600,'{IMG_PATH}s_nopic.gif');    
+})
+//-->
+</script>
+
+<script language="JavaScript" src="{APP_PATH}api.php?op=count&id={$id}&modelid={$modelid}"></script>
+{template "content","footer"}
